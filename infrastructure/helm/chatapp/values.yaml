@@ -1,0 +1,31 @@
+namespace: chatapp
+
+# Container registry configuration
+image:
+  registry: chatappdevacr.azurecr.io
+  pullPolicy: Always
+  pullSecrets:
+    - name: acr-credentials
+
+# Backend configuration
+backend:
+  name: backend
+  image:
+    repository: chatapp-backend
+    tag: latest
+  replicas: 1
+  port: 8000
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "500m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
+
+# Database migration job
+dbMigration:
+  image:
+    repository: chatapp-backend
+    tag: latest
+  backoffLimit: 3

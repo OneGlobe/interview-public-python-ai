@@ -1,0 +1,63 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-migration
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.backend.name }}
+    component: migration
+spec:
+  backoffLimit: {{ .Values.dbMigration.backoffLimit }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.backend.name }}
+        component: migration
+    spec:
+      imagePullSecrets:
+        {{- range .Values.image.pullSecrets }}
+        - name: {{ .name }}
+        {{- end }}
+      restartPolicy: OnFailure
+      containers:
+        - name: alembic-migration
+          image: {{ .Values.image.registry }}/{{ .Values.dbMigration.image.repository }}:{{ .Values.dbMigration.image.tag }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Running database migrations..."
+              alembic upgrade head
+              echo "Migration completed successfully"
+          env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: host
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: database
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
+            - name: ENV
+              value: "production"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"

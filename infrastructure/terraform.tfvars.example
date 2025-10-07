@@ -1,0 +1,33 @@
+# Example terraform.tfvars file
+# Copy this to terraform.tfvars and customize for your deployment
+
+project_name = "chatapp"
+environment  = "dev"
+location     = "eastus"
+
+# OpenAI Configuration
+# OpenAI is only available in select regions
+# See: https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models#model-summary-table-and-region-availability
+openai_location        = "eastus"
+openai_deployment_name = "gpt-4o"
+openai_model_name      = "gpt-4o"
+openai_model_version   = "2024-08-06"
+openai_capacity        = 10
+
+# AKS Configuration
+aks_node_count = 1
+aks_vm_size    = "Standard_B2s"
+
+# PostgreSQL Configuration
+postgres_admin_username = "pgadmin"
+postgres_database_name  = "chat_db"
+
+# Optional: Use different region for PostgreSQL if needed
+# postgres_location = "westus2"
+
+# Tags
+tags = {
+  Project     = "ChatApp"
+  Environment = "dev"
+  ManagedBy   = "Terraform"
+}
