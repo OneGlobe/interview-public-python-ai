@@ -1,0 +1,17 @@
+# Terraform files
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+*.tfplan
+*.tfvars
+!terraform.tfvars.example
+
+# Local files
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Kubernetes secrets (if generated locally)
+k8s/secrets-generated.yaml

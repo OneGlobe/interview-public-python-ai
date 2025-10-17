@@ -1,0 +1,65 @@
+[project]
+name = "interview-python-ai"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]>=0.116.2",
+    "sqlalchemy>=2.0.0",
+    "alembic>=1.13.0",
+    "langchain>=0.3.0",
+    "langchain-ollama>=0.2.0",
+    "python-dotenv>=1.0.0",
+    "psycopg2-binary>=2.9.9",
+    "langchain-openai>=0.3.34",
+]
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.405",
+    "ruff>=0.13.2",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+exclude = [
+    ".venv",
+    "venv",
+    "alembic",
+    "migrations",
+    "__pycache__",
+    ".git",
+    "dist",
+    "build",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "UP",   # pyupgrade
+    "SIM",  # flake8-simplify
+]
+ignore = ["B008"]  # FastAPI Depends pattern
+
+[tool.ruff.lint.isort]
+known-third-party = ["fastapi", "pydantic", "sqlalchemy", "alembic", "langchain"]
+
+[tool.pyright]
+pythonVersion = "3.12"
+venvPath = "."
+venv = ".venv"
+include = ["app"]
+exclude = [
+    "**/__pycache__",
+    "alembic",
+    "migrations",
+]
+typeCheckingMode = "standard"
+reportMissingImports = true
+reportMissingTypeStubs = false
